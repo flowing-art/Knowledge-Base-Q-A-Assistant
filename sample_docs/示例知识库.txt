@@ -1,0 +1,26 @@
+示例知识库（演示用，方法名和数值均为虚构）
+
+LOLv1 数据集
+A-Model（2022） PSNR:23.39 SSIM:0.809
+B-Model（2022） PSNR:16.36 SSIM:0.771
+C-Model（2023） PSNR:24.62 SSIM:0.842
+D-Model（2024） PSNR:19.97 SSIM:0.791
+E-Model（2025） PSNR:24.11 SSIM:0.812
+
+LOLv2-real 数据集
+A-Model（2022） PSNR:23.59 SSIM:0.824
+B-Model（2022） PSNR:18.82 SSIM:0.771
+C-Model（2023） PSNR:21.48 SSIM:0.850
+D-Model（2024） PSNR:18.29 SSIM:0.799
+E-Model（2025） PSNR:22.73 SSIM:0.833
+
+维护记录
+2025-03-02 由 张示例 完成首次入库
+2025-06-18 由 李示例 补充了 LOLv2-real 的三条指标
+
+说明
+本文件随项目提供，仅用于验证上传、检索、重排和汇总是否正常。
+可以试着问：
+LOLv1 上最高的 PSNR 是多少？
+所有 PSNR 的平均值是多少？
+这份文件的维护者都有谁？

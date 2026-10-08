@@ -1,0 +1,16 @@
+# 密钥和本地数据，不要提交
+.env
+*.db
+.kb_generation
+
+# 运行时产物
+__pycache__/
+*.pyc
+chroma_db/
+models_cache/
+
+# 编辑器和临时笔记
+.idea/
+.vscode/
+.ipynb_checkpoints/
+*.ipynb
