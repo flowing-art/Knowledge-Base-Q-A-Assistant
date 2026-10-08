@@ -7,6 +7,10 @@ from fastapi.testclient import TestClient
 
 import app as app_module
 
+# 假装成服务器上的真实路径：这类内容不允许出现在返回给浏览器的信息里。
+FAKE_LOCAL_PATH = r"C:\private\kb\secret.txt"
+LEAK_MARKERS = ("private", "secret.txt")
+
 
 class GuardTests(unittest.TestCase):
     def setUp(self):
@@ -20,9 +24,13 @@ class GuardTests(unittest.TestCase):
         else:
             os.environ["KB_TOKEN"] = self._token
 
+    def assertNoLocalPath(self, text):
+        for marker in LEAK_MARKERS:
+            self.assertNotIn(marker, text)
+
     def test_public_error_hides_local_path(self):
-        text = app_module.public_error("回答", RuntimeError(r"D:\AIkaifa\rumen\secret"))
-        self.assertNotIn("AIkaifa", text)
+        text = app_module.public_error("回答", RuntimeError(FAKE_LOCAL_PATH))
+        self.assertNoLocalPath(text)
         self.assertIn("终端日志", text)
 
     def test_upload_and_delete_reject_bad_token(self):
@@ -46,7 +54,7 @@ class GuardTests(unittest.TestCase):
         os.environ["KB_TOKEN"] = ""
         response = self.client.post("/documents/delete", json={"name": "a.txt"})
         self.assertEqual(response.status_code, 503)
-        self.assertNotIn("AIkaifa", response.text)
+        self.assertNoLocalPath(response.text)
 
     def test_oversize_upload_is_413(self):
         original = app_module.max_upload_bytes
@@ -60,7 +68,7 @@ class GuardTests(unittest.TestCase):
         finally:
             app_module.max_upload_bytes = original
         self.assertEqual(response.status_code, 413)
-        self.assertNotIn("AIkaifa", response.text)
+        self.assertNoLocalPath(response.text)
 
 
 if __name__ == "__main__":
