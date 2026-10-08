@@ -25,7 +25,7 @@ except ImportError:  # pragma: no cover
 # 这里明确让 .env 当唯一事实来源。
 load_dotenv(override=True)
 
-SYSTEM_PROMPT = """你是专业的企业智能知识库助手，回答必须严谨准确，禁止编造内容。
+SYSTEM_PROMPT = """你是专业的知识库问答助手，回答必须严谨准确，禁止编造内容。
 
 【工具使用规则】
 1. 内部文档、制度、产品相关问题，必须优先调用 rag_search 工具检索知识库
@@ -298,7 +298,7 @@ class KnowledgeAgent:
             Tool(
                 name="rag_search",
                 description=(
-                    "检索企业内部知识库，输入查询字符串。"
+                    "检索知识库，输入查询字符串。"
                     "问「最高/最大/最低/最小/所有/求和/平均」时，查询字符串本身必须带上这些词"
                     "（例如「所有 PSNR」，不要只写「PSNR」），这样一次检索就会返回全部相关条目，不要再重复检索。"
                     "返回文本含 [来源: 文件名 第N页]，回答时要保留来源。"
@@ -719,7 +719,7 @@ HELP_TEXT = """
 
 async def run_cli():
     trace = "--trace" in sys.argv or "-t" in sys.argv
-    print("=== 企业知识库智能助手已启动（LangGraph版本），输入 exit 退出 ===")
+    print("=== 知识库问答助手已启动（LangGraph版本），输入 exit 退出 ===")
     print("[启动中] 正在拉起知识库工具服务并加载模型，首次约 10~20 秒...")
     agent = await get_shared_agent()
     print(f"[就绪] 可以开始提问了。输入 /help 查看命令（当前轨迹模式：{'开' if trace else '关'}）")

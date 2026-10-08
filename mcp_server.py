@@ -4,7 +4,7 @@ import ast
 import json
 import operator
 
-mcp = FastMCP("企业知识库工具服务")
+mcp = FastMCP("知识库工具服务")
 
 
 # ---------- 安全表达式求值 ----------
