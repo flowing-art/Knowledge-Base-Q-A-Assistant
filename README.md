@@ -4,12 +4,14 @@
 
 ## 启动
 
-用 **Agent** 这个 conda 环境。系统自带的 `python`（Anaconda base）没有装 FastAPI，不要用它。
+先装好依赖（见「第一次使用前」），然后用装好依赖的那个 Python 环境启动：
 
 ```powershell
-cd D:\AIkaifa\rumen
-& D:\anaconda3\envs\Agent\python.exe app.py
+cd 项目目录
+python app.py
 ```
+
+用 conda 或 venv 的话，先激活环境再执行 `python app.py`。
 
 看到 uvicorn 在 `8000` 端口起来后，浏览器打开：
 
@@ -21,17 +23,13 @@ cd D:\AIkaifa\rumen
 
 停服务：在启动它的那个终端按 **Ctrl+C**。不要另开一个服务占着 8000。
 
-如果已经执行过 `conda init powershell`，也可以新开一个终端：
+## 第一次使用前
+
+先装依赖：
 
 ```powershell
-conda activate Agent
-cd D:\AIkaifa\rumen
-python app.py
+pip install -r requirements.txt
 ```
-
-同一个窗口里刚执行完 `conda init` 往往还不生效，要新开终端。
-
-## 第一次使用前
 
 在项目根目录放 `.env`（已有就不用改）：
 
@@ -71,8 +69,7 @@ KB_TOKEN=rumen-local
 不打开网页、只在终端里问：
 
 ```powershell
-cd D:\AIkaifa\rumen
-& D:\anaconda3\envs\Agent\python.exe agent.py
+python agent.py
 ```
 
 常用命令：`/help`、`/trace`（打印检索和计算过程）、`/steps`、`/graph`、`exit`。启动时加 `--trace` 或 `-t` 等于一开始就打开轨迹。
@@ -82,7 +79,7 @@ cd D:\AIkaifa\rumen
 不启动网页服务，在项目目录执行：
 
 ```powershell
-& D:\anaconda3\envs\Agent\python.exe -m unittest discover -s tests -v
+python -m unittest discover -s tests -v
 ```
 
 覆盖三件事：会话的记录和删除、重排过低时的字面兜底、上传/删除的口令和文件大小上限。出错信息里不会带本机路径。
@@ -90,16 +87,12 @@ cd D:\AIkaifa\rumen
 对当前知识库重跑检索分数（会加载本地模型，不访问外网）：
 
 ```powershell
-& D:\anaconda3\envs\Agent\python.exe eval_retrieval.py
+python eval_retrieval.py
 ```
 
 结果在 `eval/retrieval.md`。同一份软著表，「开发者都有谁」的重排分远低于 `0.1`，「全体开发者都是谁」远高于 `0.1`；前者靠字面兜底捞回，无关问题仍然拒绝。
 
-换一台机器时，先装依赖再准备模型：
-
-```powershell
-pip install -r requirements.txt
-```
+换一台机器时，把依赖装好、模型放好就能跑。
 
 `.env`、`history.db`、`chroma_db`、`models_cache` 已写进 `.gitignore`，不要提交。
 
@@ -126,7 +119,7 @@ pip install -r requirements.txt
 
 ## 常见问题
 
-- **打不开页面**：确认是用 Agent 环境的 `python.exe` 启动的，并且终端还停在运行状态。`http://127.0.0.1:8000` 连不上就是服务没起来。
+- **打不开页面**：确认是用装好依赖的那个 Python 启动的，并且终端还停在运行状态。`http://127.0.0.1:8000` 连不上就是服务没起来。
 - **401 密钥无效**：检查 `.env` 里的 `DEEPSEEK_API_KEY`，改完要重启 `app.py`。上传或删除提示「口令不正确」是另一件事，填的是 `KB_TOKEN`，不是 API 密钥。
 - **接口报错但页面只说看终端**：完整原因在运行 `app.py` 的那个窗口里，不会再把本机路径回给浏览器。
 - **刚上传的文件搜不到**：看上传状态是不是绿色成功。同一文件再传一次会按文件名替换旧内容，不会叠成两份。
